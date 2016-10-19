@@ -4,7 +4,6 @@
 #  to do: 1. log file from command line
 #         2. move into functions, refactor
 
-import datetime
 from operator import itemgetter
 
 def parse_log(log_file):
@@ -17,8 +16,8 @@ def parse_log(log_file):
             time_str = fields[2] + ' ' + fields[3]
             time_str = time_str.rstrip(']').lstrip('[')
             time_fmt = '%Y-%m-%d %H:%M:%S'
-            time = datetime.datetime.strptime(time_str, time_fmt)
-            if not (start_time < time < end_time): continue
+            #time = datetime.datetime.strptime(time_str, time_fmt)
+            if not (start_time < time_str < end_time): continue
             id_ip = fields[4].split('/')
             id = id_ip[0].lstrip('(')
             log_line.append(id)
@@ -30,8 +29,8 @@ def parse_log(log_file):
             time_str = fields[8] + ' ' + fields[9]
             time_str = time_str.rstrip(']').lstrip('[')
             time_fmt = '%Y-%m-%d %H:%M:%S'
-            time = datetime.datetime.strptime(time_str, time_fmt)
-            if not (start_time < time < end_time): continue
+            #time = datetime.datetime.strptime(time_str, time_fmt)
+            if not (start_time < time_str < end_time): continue
             id_ip = fields[10].split('/')
             id = id_ip[0].lstrip('(')
             log_line.append(id)
@@ -42,12 +41,22 @@ def parse_log(log_file):
             log_line.append(fields[5].rstrip(',')) #problem number
             submits.append(log_line)
     return logins, submits 
-    
+
+def insert_db(db, logs):
+    for i in logs:
+        id = i[0]
+        if id not in db:
+            db[id] = []
+        db[id].append(i)    
+
+path = '/Users/akepooh/Dropbox/Documents/Classes/Intro_to_Comp/114_591/Midterm/'    
 log1 = r'log.section497.txt'
 log2 = r'log.section498.txt'
+log1 = path+log1
+log2 = path+log2
 
-start_time = datetime.datetime(2016,10,9,9,00)
-end_time = datetime.datetime(2016,10,9,12,10)
+start_time = '2016-10-09 09:00:00'
+end_time = '2016-10-09 12:10:00'
 
 logins, submits = parse_log(log1)
 logins2, submits2 = parse_log(log2)
@@ -55,18 +64,9 @@ logins.extend(logins2)
 submits.extend(submits2)
 
 d = {}
-for i in logins:
-    id = i[0]
-    if id not in d:
-        d[id] = []
-    d[id].append(i)
+insert_db(d,logins)
+insert_db(d,submits)
 
-for i in submits:
-    id = i[0]
-    if id not in d:
-        d[id] = []
-    d[id].append(i)
-    
 for i in d: #sort by time and analyze diff ip
     d[i].sort(key=itemgetter(2))
     ip_ls = []
@@ -86,4 +86,4 @@ while (1):
         print('No ID in DB')
     else:
         for x in d[id]:
-            print(x)        
+            print(x)
