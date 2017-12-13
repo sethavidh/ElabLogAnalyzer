@@ -49,14 +49,14 @@ def insert_db(db, logs):
             db[id] = []
         db[id].append(i)    
 
-path = '/Users/akepooh/Dropbox/Documents/Classes/Intro_to_Comp/114_591/Midterm/'    
-log1 = r'log.section497.txt'
-log2 = r'log.section498.txt'
+path = '/Users/akepooh/Google Drive KU/Documents/Classes/Intro_to_Comp/112_601/final_lab/'    
+log1 = r'log.section599.txt'
+log2 = r'log.section600.txt'
 log1 = path+log1
 log2 = path+log2
 
-start_time = '2016-10-09 09:00:00'
-end_time = '2016-10-09 12:10:00'
+start_time = '2017-12-13 08:55:00'
+end_time = '2017-12-13 12:10:00'
 
 logins, submits = parse_log(log1)
 logins2, submits2 = parse_log(log2)
