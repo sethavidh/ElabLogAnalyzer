@@ -49,6 +49,18 @@ def insert_db(db, logs):
             db[id] = []
         db[id].append(i)    
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+path = '/Users/akepooh/Google Drive KU/Documents/Classes/Intro_to_Comp/112_611/Final/'    
+log1 = r'section716-611-112-final-elab-A.log'
+log2 = r'section717-611-112-final-elab-B.log'
+log1 = path+log1
+log2 = path+log2
+
+start_time = '2018-12-17 08:55:00'
+end_time = '2018-12-17 12:10:00'
+=======
+<<<<<<< Updated upstream
 path = '/Users/akepooh/Google Drive KU/Documents/Classes/Intro_to_Comp/112_601/final_lab/'    
 log1 = r'log.section599.txt'
 log2 = r'log.section600.txt'
@@ -57,6 +69,27 @@ log2 = path+log2
 
 start_time = '2017-12-13 08:55:00'
 end_time = '2017-12-13 12:10:00'
+=======
+path = '/Users/akepooh/Google Drive KU/Documents/Classes/Intro_to_Comp/112_601/'    
+log1 = r'log.section595.txt'
+log2 = r'log.section596.txt'
+log1 = path+log1
+log2 = path+log2
+
+start_time = '2017-10-08 08:50:00'
+end_time = '2017-10-08 12:10:00'
+>>>>>>> Stashed changes
+>>>>>>> 422566466eab5533922f4c18f836e6b9f4ab8043
+=======
+path = '/Users/akepooh/Dropbox/Documents/Classes/Intro_to_Comp/114_591/Midterm/'    
+log1 = r'log.section497.txt'
+log2 = r'log.section498.txt'
+log1 = path+log1
+log2 = path+log2
+
+start_time = '2016-10-09 09:00:00'
+end_time = '2016-10-09 12:10:00'
+>>>>>>> parent of e805d91... 112 601 final
 
 logins, submits = parse_log(log1)
 logins2, submits2 = parse_log(log2)
