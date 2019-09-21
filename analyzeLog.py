@@ -5,6 +5,7 @@
 #         2. move into functions, refactor
 
 from operator import itemgetter
+import sys
 
 def parse_log(log_file):
     logins = []
@@ -49,25 +50,19 @@ def insert_db(db, logs):
             db[id] = []
         db[id].append(i)    
 
-<<<<<<< Updated upstream
-path = '/Users/akepooh/Google Drive KU/Documents/Classes/Intro_to_Comp/112_601/final_lab/'    
-log1 = r'log.section599.txt'
-log2 = r'log.section600.txt'
-log1 = path+log1
-log2 = path+log2
+log1 = sys.argv[1]
+log2 = sys.argv[2]
+start_time = sys.argv[3]
+end_time = sys.argv[4]
 
-start_time = '2017-12-13 08:55:00'
-end_time = '2017-12-13 12:10:00'
-=======
-path = '/Users/akepooh/Google Drive KU/Documents/Classes/Intro_to_Comp/112_601/'    
-log1 = r'log.section595.txt'
-log2 = r'log.section596.txt'
-log1 = path+log1
-log2 = path+log2
+# path = '/Users/akepooh/Google Drive KU/Documents/Classes/Intro_to_Comp/112_601/final_lab/'    
+# log1 = r'log.section599.txt'
+# log2 = r'log.section600.txt'
+# log1 = path+log1
+# log2 = path+log2
 
-start_time = '2017-10-08 08:50:00'
-end_time = '2017-10-08 12:10:00'
->>>>>>> Stashed changes
+# start_time = '2017-12-13 08:55:00'
+# end_time = '2017-12-13 12:10:00'
 
 logins, submits = parse_log(log1)
 logins2, submits2 = parse_log(log2)
