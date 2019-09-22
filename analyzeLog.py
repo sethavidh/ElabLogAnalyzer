@@ -87,7 +87,7 @@ for i in d: #sort by time and analyze diff ip
 
 while (1):
     id = input('\nEnter Student ID to check: ')
-    if id == '': break
+    if id == '\n': break
     if id not in d:
         print('No ID in DB')
     else:
