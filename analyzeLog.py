@@ -1,11 +1,10 @@
 # Analyzing elab logs for logins/submits using different IP during test
 #  by Sethavidh Gertphol
-#  18 Oct 2016
-#  to do: 1. log file from command line
-#         2. move into functions, refactor
+#  23 Oct 2019
+#  to do: 1. list all IP subnets
 
 from operator import itemgetter
-import sys
+import sys, os
 
 def parse_log(log_file):
     logins = []
@@ -50,19 +49,47 @@ def insert_db(db, logs):
             db[id] = []
         db[id].append(i)    
 
+def insert_ip(ipdb, logs):
+    for rec in logs:
+        id = rec[0]
+        ip_subnet = rec[1].rpartition(".")[0]
+        if ip_subnet not in ipdb:
+            ipdb[ip_subnet] = []
+        if id not in ipdb[ip_subnet]:
+            ipdb[ip_subnet].append(id)
+
+def showMultiIPSubmit():
+    print("Submission from multiple IPs")
+    for i in d: #sort by time and analyze diff ip
+        d[i].sort(key=itemgetter(2))
+        ip_ls = []
+        for x in d[i]:
+            ip = x[1]
+            if ip not in ip_ls:
+                ip_ls.append(ip)
+        if len(ip_ls) > 1:
+            print(i)
+
+def showIPSubnets():
+    print("%-11s %s" % ("IP Subnets", "Clients"))
+    for elem in sorted(ips.items()):
+        print("%-11s % 7d" % (elem[0], len(elem[1])))
+    print("")
+
+def clear(): 
+  
+    # for windows 
+    if os.name == 'nt': 
+        _ = os.system('cls') 
+  
+    # for mac and linux(here, os.name is 'posix') 
+    else: 
+        _ = os.system('clear')
+
 log1 = sys.argv[1]
 log2 = sys.argv[2]
 start_time = sys.argv[3]
 end_time = sys.argv[4]
-
-# path = '/Users/akepooh/Google Drive KU/Documents/Classes/Intro_to_Comp/112_601/final_lab/'    
-# log1 = r'log.section599.txt'
-# log2 = r'log.section600.txt'
-# log1 = path+log1
-# log2 = path+log2
-
-# start_time = '2017-12-13 08:55:00'
-# end_time = '2017-12-13 12:10:00'
 
 logins, submits = parse_log(log1)
 logins2, submits2 = parse_log(log2)
@@ -70,26 +97,38 @@ logins.extend(logins2)
 submits.extend(submits2)
 
 d = {}
+ips = {}
+
 insert_db(d,logins)
 insert_db(d,submits)
-
-for i in d: #sort by time and analyze diff ip
-    d[i].sort(key=itemgetter(2))
-    ip_ls = []
-    for x in d[i]:
-        ip = x[1]
-        if ip not in ip_ls:
-            ip_ls.append(ip)
-    if len(ip_ls) > 1:
-        print(i, ': ')
-        for x in d[i]:
-            print(x)
+insert_ip(ips, logins)
+insert_ip(ips, submits)
 
 while (1):
-    id = input('\nEnter Student ID to check: ')
-    if id == '\n': break
-    if id not in d:
-        print('No ID in DB')
-    else:
-        for x in d[id]:
-            print(x)
+    clear()
+    showIPSubnets()
+    showMultiIPSubmit()
+    id = input('\nEnter choice:\n1) List IPs in Subnet\n2) Check Student Submission\n0) Exit\n')
+    if id == '0': break
+    if id == '2':
+        while 1:
+            showMultiIPSubmit()
+            stu_id = input("Enter Student ID (0 to backup): ")
+            if stu_id == '0':
+                break
+            if stu_id not in d:
+                print('No ID in DB')
+            else:
+                for x in d[stu_id]:
+                    print(x)
+    elif id == '1':
+        showIPSubnets()
+        while 1:
+            subnet_id = input("Enter Subnet (0 to backup): ")
+            if subnet_id == '0':
+                break
+            if subnet_id not in ips:
+                print('No Subnet ID in DB')
+            else:
+                for x in sorted(ips[subnet_id]):
+                    print(x)
