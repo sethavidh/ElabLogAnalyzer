@@ -49,21 +49,26 @@ def insert_db(db, logs):
             db[id] = []
         db[id].append(i)    
 
-def insert_ip(ipdb, logs):
+def insert_ip(ipdb, subnetdb, logs):
     for rec in logs:
         id = rec[0]
+        ip = rec[1]
+        if ip not in ipdb:
+            ipdb[ip] = []
+        if id not in ipdb[ip]:
+            ipdb[ip].append(id)
         ip_subnet = rec[1].rpartition(".")[0]
-        if ip_subnet not in ipdb:
-            ipdb[ip_subnet] = []
-        if id not in ipdb[ip_subnet]:
-            ipdb[ip_subnet].append(id)
+        if ip_subnet not in subnetdb:
+            subnetdb[ip_subnet] = []
+        if id not in subnetdb[ip_subnet]:
+            subnetdb[ip_subnet].append(id)
 
-def showMultiIPSubmit():
+def showMultiIPSubmit(db):
     print("Submission from multiple IPs")
-    for i in d: #sort by time and analyze diff ip
-        d[i].sort(key=itemgetter(2))
+    for i in db: #sort by time and analyze diff ip
+        db[i].sort(key=itemgetter(2))
         ip_ls = []
-        for x in d[i]:
+        for x in db[i]:
             ip = x[1]
             if ip not in ip_ls:
                 ip_ls.append(ip)
@@ -72,9 +77,17 @@ def showMultiIPSubmit():
 
 def showIPSubnets():
     print("%-11s %s" % ("IP Subnets", "Clients"))
-    for elem in sorted(ips.items()):
+    for elem in sorted(subnet.items()):
         print("%-11s % 7d" % (elem[0], len(elem[1])))
     print("")
+
+def showMultiIDfromIP(ip_db):
+    for ip in ip_db:
+        if len(ip_db[ip]) > 1:
+            print("%s: " % (ip), end='')
+            for id in ip_db[ip]:
+                print("%s " % id, end='')
+            print('')
 
 def clear(): 
   
@@ -97,18 +110,20 @@ logins.extend(logins2)
 submits.extend(submits2)
 
 d = {}
-ips = {}
-
+subnet = {}
+ip_db = {}
 insert_db(d,logins)
 insert_db(d,submits)
-insert_ip(ips, logins)
-insert_ip(ips, submits)
+insert_ip(ip_db, subnet, logins)
+insert_ip(ip_db, subnet, submits)
 
 while (1):
     clear()
     showIPSubnets()
     showMultiIPSubmit()
-    id = input('\nEnter choice:\n1) List IPs in Subnet\n2) Check Student Submission\n0) Exit\n')
+    showMultiIDfromIP(ip_db)
+
+    id = input('\nEnter choice:\n1) List IPs in Subnet\n2) Check Student Submission\n3) Show ID from IP\n0) Exit\n')
     if id == '0': break
     if id == '2':
         while 1:
@@ -132,3 +147,9 @@ while (1):
             else:
                 for x in sorted(ips[subnet_id]):
                     print(x)
+    elif id == '3':
+        for ip in ip_db:
+            print("%s: " % (ip), end='')
+            for id in ip_db[ip]:
+                print("%s " % id, end='')
+            print('')
