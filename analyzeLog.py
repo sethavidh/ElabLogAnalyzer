@@ -120,14 +120,14 @@ insert_ip(ip_db, subnet, submits)
 while (1):
     clear()
     showIPSubnets()
-    showMultiIPSubmit()
+    showMultiIPSubmit(d)
     showMultiIDfromIP(ip_db)
 
     id = input('\nEnter choice:\n1) List IPs in Subnet\n2) Check Student Submission\n3) Show ID from IP\n0) Exit\n')
     if id == '0': break
     if id == '2':
         while 1:
-            showMultiIPSubmit()
+            showMultiIPSubmit(d)
             stu_id = input("Enter Student ID (0 to backup): ")
             if stu_id == '0':
                 break
@@ -142,10 +142,10 @@ while (1):
             subnet_id = input("Enter Subnet (0 to backup): ")
             if subnet_id == '0':
                 break
-            if subnet_id not in ips:
+            if subnet_id not in subnet:
                 print('No Subnet ID in DB')
             else:
-                for x in sorted(ips[subnet_id]):
+                for x in sorted(subnet[subnet_id]):
                     print(x)
     elif id == '3':
         for ip in ip_db:
